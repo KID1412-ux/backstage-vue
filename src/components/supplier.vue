@@ -12,36 +12,31 @@
         width="150">
       </el-table-column>
       <el-table-column
-        prop="merchantName"
-        label="商户名称"
+        prop="supplierName"
+        label="供应商名称"
         width="150">
       </el-table-column>
       <el-table-column
-        prop="merchantDescribe"
-        label="商户描述"
+        prop="supplierPhone"
+        label="供应商电话"
         width="250">
       </el-table-column>
       <el-table-column
-        prop="merchantPhone"
-        label="商户电话"
-        width="150">
+        prop="supplierAddress"
+        label="供应商地址"
+        width="250">
       </el-table-column>
       <el-table-column
-        prop="deliveryAddress"
-        label="提货地址"
-        width="280">
-      </el-table-column>
-      <el-table-column
-        prop="merchantAuditStatus"
-        label="商户审核状态"
-        width="110">
+        prop="supplierAuditStatus"
+        label="供应商审核状态"
+        width="230">
         <template slot-scope="scope">
-          <p v-if="scope.row.merchantAuditStatus = '0'">已提交</p>
+          <p v-if="scope.row.supplierAuditStatus = '0'">已提交</p>
         </template>
       </el-table-column>
       <el-table-column
         label="操作"
-        width="145">
+        width="205">
         <template slot-scope="scope">
           <el-button @click="pass(scope.row.id)" type="text" size="small">通过</el-button>
           <el-button @click="fail(scope.row.id)" type="text" size="small">不通过</el-button>
@@ -75,14 +70,14 @@
 
 <script>
 export default {
-  name: "merchant",
+  name: "supplier",
   data() {
     return {
       tableData: [],
-      dialogVisible:false,
+      dialogVisible:"",
       feedback:{
         parentID:"",
-        logtype:"商户审核不通过",
+        logtype:"供应商审核不通过",
         logdetail:""
       }
     }
@@ -91,18 +86,18 @@ export default {
     getdate(){
       var _this=this;
 
-      this.$axios.post("/user/selectallmerchant").then(function (result){
+      this.$axios.post("/user/selectallsupplier").then(function (result){
         _this.tableData=result.data;
         console.log(_this.tableData)
       }).catch()
     },
     pass(id){
-     var _this=this;
+      var _this=this;
 
       var param=new URLSearchParams();
       param.append("id",id);
-      this.$axios.post("/user/pass",param).then(function (result){
-          _this.getdate();
+      this.$axios.post("/user/passsupplier",param).then(function (result){
+        _this.getdate();
       }).catch()
     },
     fail(id){
@@ -112,27 +107,28 @@ export default {
 
       var param=new URLSearchParams();
       param.append("id",id);
-      this.$axios.post("/user/fail",param).then(function (result){
+      this.$axios.post("/user/failsupplier",param).then(function (result){
         _this.dialogVisible=true;
       }).catch()
-    }, handleClose() {
-      this.$confirm('确认关闭？')
-        .then(_ => {
-          this.dialogVisible=false
-        })
-        .catch(_ => {});
     },
-    onsubmit(){
-      var _this=this;
-      var param=new URLSearchParams();
-      for (let key in this.feedback){
-        param.append(key,this.feedback[key])
-      }
-      this.$axios.post("/user/insertloginformation",param).then(function (result){
-            _this.dialogVisible=false;
-            _this.getdate();
-      }).catch()
-    }
+    handleClose() {
+  this.$confirm('确认关闭？')
+    .then(_ => {
+      this.dialogVisible=false
+    })
+    .catch(_ => {});
+},
+  onsubmit(){
+  var _this=this;
+  var param=new URLSearchParams();
+  for (let key in this.feedback){
+    param.append(key,this.feedback[key])
+  }
+  this.$axios.post("/user/insertloginformation",param).then(function (result){
+    _this.dialogVisible=false;
+    _this.getdate();
+  }).catch()
+}
   },
   created() {
     this.getdate();

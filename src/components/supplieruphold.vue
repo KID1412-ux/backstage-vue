@@ -7,34 +7,29 @@
       height="100%">
       <el-table-column
         fixed
-        prop="merchantId"
-        label="商户ID"
+        prop="id"
+        label="用户ID"
         width="150">
       </el-table-column>
       <el-table-column
-        prop="merchantName"
-        label="商户名称"
+        prop="supplierName"
+        label="供应商名称"
         width="150">
       </el-table-column>
       <el-table-column
-        prop="merchantDescribe"
-        label="商户描述"
+        prop="supplierPhone"
+        label="供应商电话"
         width="250">
       </el-table-column>
       <el-table-column
-        prop="merchantPhone"
-        label="商户电话"
-        width="150">
+        prop="supplierAddress"
+        label="供应商地址"
+        width="250">
       </el-table-column>
       <el-table-column
-        prop="deliveryAddress"
-        label="提货地址"
-        width="280">
-      </el-table-column>
-      <el-table-column
-        prop="merchantStats"
-        label="商户状态"
-        width="110">
+        prop="supplierStats"
+        label="供应商状态"
+        width="230">
         <template slot-scope="scope">
           <p v-if="scope.row.merchantStats == '0'">正常</p>
           <p v-if="scope.row.merchantStats == '1'">拉黑</p>
@@ -42,9 +37,9 @@
       </el-table-column>
       <el-table-column
         label="操作"
-        width="145">
+        width="205">
         <template slot-scope="scope">
-          <el-button @click="select(scope.row.merchantId)" type="text">修改商户信息</el-button>
+          <el-button @click="select(scope.row.id)" type="text">修改供应商信息</el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -55,23 +50,20 @@
       :before-close="handleClose">
       <el-form :model="user">
 
-        <el-form-item label="商户ID">
-          <el-input v-model="user.merchantId" disabled></el-input>
+        <el-form-item label="供应商ID">
+          <el-input v-model="user.id" disabled></el-input>
         </el-form-item>
-        <el-form-item label="商户名称">
-          <el-input v-model="user.merchantName" ></el-input>
+        <el-form-item label="供应商名称">
+          <el-input v-model="user.supplierName" ></el-input>
         </el-form-item>
-        <el-form-item label="商户描述">
-          <el-input v-model="user.merchantDescribe" ></el-input>
+        <el-form-item label="供应商电话">
+          <el-input v-model="user.supplierPhone"></el-input>
         </el-form-item>
-        <el-form-item label="商户电话">
-          <el-input v-model="user.merchantPhone"></el-input>
+        <el-form-item label="供应商地址">
+          <el-input v-model="user.supplierAddress"></el-input>
         </el-form-item>
-        <el-form-item label="提货地址">
-          <el-input v-model="user.deliveryAddress"></el-input>
-        </el-form-item>
-        <el-form-item label="商户状态">
-          <el-select v-model="user.merchantStats" >
+        <el-form-item label="供应商状态">
+          <el-select v-model="user.supplierStats" >
             <el-option  value="0" label="正常"></el-option>
             <el-option  value="1" label="拉黑"></el-option>
           </el-select>
@@ -87,18 +79,18 @@
 
 <script>
 export default {
-  name: "merchantuphold",
+  name: "supplieruphold",
   data() {
     return {
       tableData: [],
       user:{},
-      dialogVisible:false,
+      dialogVisible:false
     }
   },
   methods:{
     getdate(){
       var _this=this;
-      this.$axios.post("/user/selectmerchant").then(function (result){
+      this.$axios.post("/user/selectsupplier").then(function (result){
         _this.tableData=result.data;
       }).catch()
     },
@@ -108,7 +100,7 @@ export default {
 
       var param=new URLSearchParams();
       param.append("id",id);
-      this.$axios.post("/user/selectbymerchantId",param).then(function (result){
+      this.$axios.post("/user/selectsupplierbyid",param).then(function (result){
         _this.user=result.data
         _this.dialogVisible = true
       }).catch()
@@ -120,10 +112,9 @@ export default {
 
       for(let key in this.user){
         param.append(key,this.user[key]);
-        console.log(param.get(key));
       }
       console.log(param)
-      this.$axios.post("/user/updatemerchant",param).then(function (result){
+      this.$axios.post("/user/updatesupplier",param).then(function (result){
         _this.getdate();
         _this.dialogVisible=false;
       }).catch()
@@ -136,9 +127,10 @@ export default {
         })
         .catch(_ => {});
     }
-    }
- ,created() {
+  }
+  ,created() {
     this.getdate();
   }
 }
 </script>
+

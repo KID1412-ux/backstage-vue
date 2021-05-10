@@ -16,7 +16,7 @@
       <el-row>
         <el-col :span="8"><div class="grid-content"></div></el-col>
         <el-col :span="8"><div class="grid-content">
-          <el-input id="password" class="input"  type="password"  v-model="password" placeholder="请输入帐号">
+          <el-input id="password" class="input"  type="password"  v-model="password" placeholder="请输入密码">
             <template slot="prepend">密码</template>
           </el-input>
         </div></el-col>

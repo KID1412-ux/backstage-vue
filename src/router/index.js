@@ -5,6 +5,8 @@ import Home from "../components/home"
 import Denglu from "../components/denglu"
 import Merchant from "../components/merchant"
 import Merchantuphold from "../components/merchantuphold"
+import Supplier from "../components/supplier";
+import Supplieruphold from "../components/supplieruphold";
 
 Vue.use(Router)
 
@@ -22,6 +24,14 @@ export default new Router({
         path: "/Merchantuphold",
           name: "Merchantuphold",
           component: Merchantuphold
+        },{
+          path: "/Supplier",
+          name: "Supplier",
+          component: Supplier
+        },{
+          path: "/Supplieruphold",
+          name:"Supplieruphold",
+          component: Supplieruphold
         }]
     },
       {
