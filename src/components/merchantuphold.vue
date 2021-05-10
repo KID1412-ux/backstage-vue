@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div style="height: 100%">
     <el-table
       border
       :data="tableData"
@@ -35,25 +35,51 @@
         prop="merchantStats"
         label="商户状态"
         width="110">
+        <template slot-scope="scope">
+          <p v-if="scope.row.merchantStats == '0'">正常</p>
+          <p v-if="scope.row.merchantStats == '1'">拉黑</p>
+        </template>
       </el-table-column>
       <el-table-column
         label="操作"
         width="145">
         <template slot-scope="scope">
-          <el-button @click="select(scope.row.merchantId)" type="text" size="small">修改商户信息</el-button>
+          <el-button @click="select(scope.row.merchantId)" type="text" size="medium" icon="el-icon-edit-outline"></el-button>
         </template>
       </el-table-column>
     </el-table>
     <el-dialog
-      title="提示"
+      title="修改商家信息"
       :visible="dialogVisible"
       width="30%"
       :before-close="handleClose">
-      <span>这是一段信息</span>
-      <span slot="footer" class="dialog-footer">
-    <el-button @click="dialogVisible = false">取 消</el-button>
-    <el-button type="primary" @click="dialogVisible = false">确 定</el-button>
-  </span>
+      <el-form :model="user">
+
+        <el-form-item label="商户ID">
+          <el-input v-model="user.merchantId" disabled></el-input>
+        </el-form-item>
+        <el-form-item label="商户名称">
+          <el-input v-model="user.merchantName" ></el-input>
+        </el-form-item>
+        <el-form-item label="商户描述">
+          <el-input v-model="user.merchantDescribe" ></el-input>
+        </el-form-item>
+        <el-form-item label="商户电话">
+          <el-input v-model="user.merchantPhone"></el-input>
+        </el-form-item>
+        <el-form-item label="提货地址">
+          <el-input v-model="user.deliveryAddress"></el-input>
+        </el-form-item>
+        <el-form-item label="商户状态">
+          <el-select v-model="user.merchantStats" >
+            <el-option  value="0" label="正常"></el-option>
+            <el-option  value="1" label="拉黑"></el-option>
+          </el-select>
+        </el-form-item>
+
+      </el-form>
+      <el-button type="info" @click="onsubmit()">保存</el-button>
+      <el-button type="warming" @click="dialogVisible=false">关闭</el-button>
     </el-dialog>
   </div>
 
@@ -65,8 +91,8 @@ export default {
   data() {
     return {
       tableData: [],
-      user:"",
-      dialogVisible:false
+      user:{},
+      dialogVisible:false,
     }
   },
   methods:{
@@ -74,7 +100,6 @@ export default {
       var _this=this;
       this.$axios.post("/user/selectmerchant").then(function (result){
         _this.tableData=result.data;
-        console.log(_this.tableData)
       }).catch()
     },
     select(id){
@@ -85,19 +110,35 @@ export default {
       param.append("id",id);
       this.$axios.post("/user/selectbymerchantId",param).then(function (result){
         _this.user=result.data
-        console.log(_this.user)
         _this.dialogVisible = true
       }).catch()
     },
-    handleClose(done) {
+    onsubmit(){
+      var _this=this;
+
+      var param=new URLSearchParams();
+
+      for(let key in this.user){
+        param.append(key,this.user[key]);
+        console.log(param.get(key));
+      }
+      console.log(param)
+      this.$axios.post("/user/updatemerchant",param).then(function (result){
+        _this.getdate();
+        _this.dialogVisible=false;
+      }).catch()
+
+    },
+    handleClose() {
       this.$confirm('确认关闭？')
         .then(_ => {
-          this.dialogVisible=false;
+          this.dialogVisible=false
         })
         .catch(_ => {});
     }
-  }
+    }
  ,created() {
     this.getdate();
-  }}
+  }
+}
 </script>

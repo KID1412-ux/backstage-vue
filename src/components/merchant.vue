@@ -34,6 +34,9 @@
       prop="merchantAuditStatus"
       label="商户审核状态"
       width="110">
+      <template slot-scope="scope">
+        <p v-if="scope.row.merchantAuditStatus = '0'">已提交</p>
+      </template>
     </el-table-column>
     <el-table-column
       label="操作"
