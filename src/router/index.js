@@ -7,6 +7,7 @@ import Merchant from "../components/merchant"
 import Merchantuphold from "../components/merchantuphold"
 import Supplier from "../components/supplier";
 import Supplieruphold from "../components/supplieruphold";
+import Employee from "../components/employee";
 
 Vue.use(Router)
 
@@ -32,6 +33,10 @@ export default new Router({
           path: "/Supplieruphold",
           name:"Supplieruphold",
           component: Supplieruphold
+        },{
+          path: "/Employee",
+          name: "Employee",
+          component: Employee
         }]
     },
       {

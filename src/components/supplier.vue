@@ -31,15 +31,19 @@
         label="供应商审核状态"
         width="230">
         <template slot-scope="scope">
-          <p v-if="scope.row.supplierAuditStatus = '0'">已提交</p>
+          <p v-if="scope.row.supplierAuditStatus == '0'">已提交</p>
         </template>
       </el-table-column>
       <el-table-column
         label="操作"
         width="205">
         <template slot-scope="scope">
-          <el-button @click="pass(scope.row.id)" type="text" size="small">通过</el-button>
-          <el-button @click="fail(scope.row.id)" type="text" size="small">不通过</el-button>
+          <el-tooltip class="item" effect="dark" content="通过" placement="bottom">
+            <el-button @click="pass(scope.row.id)" type="success" icon="el-icon-check" circle></el-button>
+          </el-tooltip>
+          <el-tooltip class="item" effect="dark" content="不通过" placement="bottom">
+            <el-button @click="fail(scope.row.id)" type="info" icon="el-icon-close" circle></el-button>
+          </el-tooltip>
         </template>
       </el-table-column>
     </el-table>
@@ -51,7 +55,7 @@
       :before-close="handleClose">
       <el-form :model="feedback">
 
-        <el-form-item label="当前用户ID">
+        <el-form-item label="当前用户ID:">
           <el-input v-model="feedback.parentID" disabled></el-input>
         </el-form-item>
         <el-form-item label="反馈信息类型:">
@@ -74,7 +78,7 @@ export default {
   data() {
     return {
       tableData: [],
-      dialogVisible:"",
+      dialogVisible:false,
       feedback:{
         parentID:"",
         logtype:"供应商审核不通过",

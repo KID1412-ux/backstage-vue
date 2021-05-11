@@ -31,15 +31,17 @@
         label="供应商状态"
         width="230">
         <template slot-scope="scope">
-          <p v-if="scope.row.merchantStats == '0'">正常</p>
-          <p v-if="scope.row.merchantStats == '1'">拉黑</p>
+          <p v-if="scope.row.supplierStats == '0'">正常</p>
+          <p v-else>拉黑</p>
         </template>
       </el-table-column>
       <el-table-column
         label="操作"
         width="205">
         <template slot-scope="scope">
-          <el-button @click="select(scope.row.id)" type="text">修改供应商信息</el-button>
+          <el-tooltip class="item" effect="dark" content="修改供应商信息" placement="bottom">
+            <el-button @click="select(scope.row.id)" type="success" icon="el-icon-edit-outline" circle></el-button>
+          </el-tooltip>
         </template>
       </el-table-column>
     </el-table>
@@ -115,6 +117,11 @@ export default {
       }
       console.log(param)
       this.$axios.post("/user/updatesupplier",param).then(function (result){
+        _this.$message({
+          showClose: true,
+          message: result.data,
+          type: 'success'
+        });
         _this.getdate();
         _this.dialogVisible=false;
       }).catch()
