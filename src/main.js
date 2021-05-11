@@ -1,17 +1,18 @@
 import Vue from 'vue'
 import ElementUI from 'element-ui';
 import 'element-ui/lib/theme-chalk/index.css';
-import App  from "./App";
+import App from "./App";
 //引用router.js
 import router from './router'
+//导入axios
+import Axios from "axios";
+
 Vue.config.productionTip = false
 
 Vue.use(ElementUI)
 
-//导入axios
-import Axios from "axios";
 //配置异步将要访问的路径
-Axios.defaults.baseURL="http://127.0.0.1:8090/code"
+Axios.defaults.baseURL = "http://127.0.0.1:8090/code"
 
 //将baseURL绑定到全局
 Vue.prototype.$axios = Axios

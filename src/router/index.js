@@ -12,39 +12,39 @@ import Employee from "../components/employee";
 Vue.use(Router)
 
 export default new Router({
-  routes:[
+    routes: [
       {
-      path:"/Home",
-      name:"Home",
-      component:Home,
-        children:[{
-        path:"/Merchant",
-          name:"Merchant",
-          component:Merchant
+        path: "/Home",
+        name: "Home",
+        component: Home,
+        children: [{
+          path: "/Merchant",
+          name: "Merchant",
+          component: Merchant
         }, {
-        path: "/Merchantuphold",
+          path: "/Merchantuphold",
           name: "Merchantuphold",
           component: Merchantuphold
-        },{
+        }, {
           path: "/Supplier",
           name: "Supplier",
           component: Supplier
-        },{
+        }, {
           path: "/Supplieruphold",
-          name:"Supplieruphold",
+          name: "Supplieruphold",
           component: Supplieruphold
         },{
           path: "/Employee",
           name: "Employee",
           component: Employee
         }]
-    },
+      },
       {
-        path:"/",
-        name:"Denglu",
-        component:Denglu,
+        path: "/",
+        name: "Denglu",
+        component: Denglu,
       }
     ],
-    mode:"history"
+    mode: "history"
   }
 )
