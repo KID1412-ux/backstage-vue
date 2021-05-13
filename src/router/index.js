@@ -8,6 +8,7 @@ import Merchantuphold from "../components/merchantuphold"
 import Supplier from "../components/supplier";
 import Supplieruphold from "../components/supplieruphold";
 import Employee from "../components/employee";
+import TypeMaintain from "../components/goods_data_maintain/type_maintain";
 
 Vue.use(Router)
 
@@ -33,10 +34,14 @@ export default new Router({
           path: "/Supplieruphold",
           name: "Supplieruphold",
           component: Supplieruphold
-        },{
+        }, {
           path: "/Employee",
           name: "Employee",
           component: Employee
+        }, {
+          path: "/TypeMaintain",
+          name: "TypeMaintain",
+          component: TypeMaintain
         }]
       },
       {
