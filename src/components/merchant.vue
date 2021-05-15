@@ -83,57 +83,58 @@ export default {
   data() {
     return {
       tableData: [],
-      dialogVisible:false,
-      feedback:{
-        parentID:"",
-        logtype:"商户审核不通过",
-        logdetail:""
+      dialogVisible: false,
+      feedback: {
+        parentID: "",
+        logtype: "商户审核不通过",
+        logdetail: ""
       }
     }
   },
-  methods:{
-    getdate(){
-      var _this=this;
+  methods: {
+    getdate() {
+      var _this = this;
 
-      this.$axios.post("/user/selectallmerchant").then(function (result){
-        _this.tableData=result.data;
+      this.$axios.post("/user/selectallmerchant").then(function (result) {
+        _this.tableData = result.data;
         console.log(_this.tableData)
       }).catch()
     },
-    pass(id){
-     var _this=this;
+    pass(id) {
+      var _this = this;
 
-      var param=new URLSearchParams();
-      param.append("id",id);
-      this.$axios.post("/user/pass",param).then(function (result){
-          _this.getdate();
+      var param = new URLSearchParams();
+      param.append("id", id);
+      this.$axios.post("/user/pass", param).then(function (result) {
+        _this.getdate();
       }).catch()
     },
-    fail(id){
-      var _this=this;
+    fail(id) {
+      var _this = this;
 
-      _this.feedback.parentID=id;
+      _this.feedback.parentID = id;
 
-      var param=new URLSearchParams();
-      param.append("id",id);
-      this.$axios.post("/user/fail",param).then(function (result){
-        _this.dialogVisible=true;
+      var param = new URLSearchParams();
+      param.append("id", id);
+      this.$axios.post("/user/fail", param).then(function (result) {
+        _this.dialogVisible = true;
       }).catch()
     }, handleClose() {
       this.$confirm('确认关闭？')
         .then(_ => {
-          this.dialogVisible=false
+          this.dialogVisible = false
         })
-        .catch(_ => {});
+        .catch(_ => {
+        });
     },
-    onsubmit(){
-      var param=new URLSearchParams();
-      for (let key in this.feedback){
-        param.append(key,this.feedback[key])
+    onsubmit() {
+      var param = new URLSearchParams();
+      for (let key in this.feedback) {
+        param.append(key, this.feedback[key])
       }
-      this.$axios.post("/user/insertloginformation",param).then(function (result){
-            this.dialogVisible=false;
-            this.getdate();
+      this.$axios.post("/user/insertloginformation", param).then(function (result) {
+        this.dialogVisible = false;
+        this.getdate();
       }).catch()
     }
   },

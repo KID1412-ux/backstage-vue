@@ -1,67 +1,85 @@
 <template>
   <div>
-  <el-container class="footer">
-    <el-header style="background: red">
-    </el-header>
-    <el-main>
-      <el-row>
-        <el-col :span="8"><div class="grid-content"></div></el-col>
-        <el-col :span="8"><div class="grid-content">
-          <el-input id="name" class="input"  v-model="employeeNo" placeholder="请输入帐号">
-            <template slot="prepend">帐号</template>
-          </el-input>
-        </div></el-col>
-        <el-col :span="8"><div class="grid-content"></div></el-col>
-      </el-row>
-      <el-row>
-        <el-col :span="8"><div class="grid-content"></div></el-col>
-        <el-col :span="8"><div class="grid-content">
-          <el-input id="password" class="input"  type="password"  v-model="password" placeholder="请输入密码">
-            <template slot="prepend">密码</template>
-          </el-input>
-        </div></el-col>
-        <el-col :span="8"><div class="grid-content"></div></el-col>
-      </el-row>
-      <el-row>
-        <el-col :span="8"><div class="grid-content"></div></el-col>
-        <el-col :span="8"><div class="grid-content">
-          <el-button id="login" class="input" @click="dl" type="primary">登录</el-button>
-        </div></el-col>
-        <el-col :span="8"><div class="grid-content"></div></el-col>
-      </el-row>
-    </el-main>
-    <el-footer style="background: yellow">Footer</el-footer>
-  </el-container>
+    <el-container class="footer">
+      <el-header style="background: red">
+      </el-header>
+      <el-main>
+        <el-row>
+          <el-col :span="8">
+            <div class="grid-content"></div>
+          </el-col>
+          <el-col :span="8">
+            <div class="grid-content">
+              <el-input id="name" class="input" v-model="employeeNo" placeholder="请输入帐号">
+                <template slot="prepend">帐号</template>
+              </el-input>
+            </div>
+          </el-col>
+          <el-col :span="8">
+            <div class="grid-content"></div>
+          </el-col>
+        </el-row>
+        <el-row>
+          <el-col :span="8">
+            <div class="grid-content"></div>
+          </el-col>
+          <el-col :span="8">
+            <div class="grid-content">
+              <el-input id="password" class="input" type="password" v-model="password" placeholder="请输入密码">
+                <template slot="prepend">密码</template>
+              </el-input>
+            </div>
+          </el-col>
+          <el-col :span="8">
+            <div class="grid-content"></div>
+          </el-col>
+        </el-row>
+        <el-row>
+          <el-col :span="8">
+            <div class="grid-content"></div>
+          </el-col>
+          <el-col :span="8">
+            <div class="grid-content">
+              <el-button id="login" class="input" @click="dl" type="primary">登录</el-button>
+            </div>
+          </el-col>
+          <el-col :span="8">
+            <div class="grid-content"></div>
+          </el-col>
+        </el-row>
+      </el-main>
+      <el-footer style="background: yellow">Footer</el-footer>
+    </el-container>
 
-</div>
+  </div>
 </template>
 
 <script>
 export default {
   name: "denglu",
-  data () {
+  data() {
     return {
-      employeeNo:"",
-      password:"",
-      yg:""
+      employeeNo: "",
+      password: "",
+      yg: ""
     }
   },
-  methods:{
-    dl(){
-      var _this=this;
+  methods: {
+    dl() {
+      var _this = this;
 
-      var param=new URLSearchParams();
-      param.append("employeeNo",this.employeeNo);
-      param.append("password",this.password);
+      var param = new URLSearchParams();
+      param.append("employeeNo", this.employeeNo);
+      param.append("password", this.password);
 
-      this.$axios.post("/emp/denglu",param).then(function (result) {
-        if (result.data!=""){
-            _this.yg=result.data
-            sessionStorage.setItem("id",_this.yg.id)
-            _this.$router.push({
-              name:'Home',
-            })
-        }else {
+      this.$axios.post("/emp/denglu", param).then(function (result) {
+        if (result.data != "") {
+          _this.yg = result.data
+          sessionStorage.setItem("id", _this.yg.id)
+          _this.$router.push({
+            name: 'Home',
+          })
+        } else {
           alert("登录失败")
         }
       }).catch()
@@ -79,7 +97,7 @@ export default {
   color: #2c3e50;
 }
 
-.input{
+.input {
   width: 350px;
 }
 
@@ -105,7 +123,7 @@ a {
   margin-top: 40px;
 }
 
-.footer{
+.footer {
   position: absolute;
   left: 0;
   top: 0;

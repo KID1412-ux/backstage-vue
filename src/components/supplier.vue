@@ -78,61 +78,62 @@ export default {
   data() {
     return {
       tableData: [],
-      dialogVisible:false,
-      feedback:{
-        parentID:"",
-        logtype:"供应商审核不通过",
-        logdetail:""
+      dialogVisible: false,
+      feedback: {
+        parentID: "",
+        logtype: "供应商审核不通过",
+        logdetail: ""
       }
     }
   },
-  methods:{
-    getdate(){
-      var _this=this;
+  methods: {
+    getdate() {
+      var _this = this;
 
-      this.$axios.post("/user/selectallsupplier").then(function (result){
-        _this.tableData=result.data;
+      this.$axios.post("/user/selectallsupplier").then(function (result) {
+        _this.tableData = result.data;
         console.log(_this.tableData)
       }).catch()
     },
-    pass(id){
-      var _this=this;
+    pass(id) {
+      var _this = this;
 
-      var param=new URLSearchParams();
-      param.append("id",id);
-      this.$axios.post("/user/passsupplier",param).then(function (result){
+      var param = new URLSearchParams();
+      param.append("id", id);
+      this.$axios.post("/user/passsupplier", param).then(function (result) {
         _this.getdate();
       }).catch()
     },
-    fail(id){
-      var _this=this;
+    fail(id) {
+      var _this = this;
 
-      _this.feedback.parentID=id;
+      _this.feedback.parentID = id;
 
-      var param=new URLSearchParams();
-      param.append("id",id);
-      this.$axios.post("/user/failsupplier",param).then(function (result){
-        _this.dialogVisible=true;
+      var param = new URLSearchParams();
+      param.append("id", id);
+      this.$axios.post("/user/failsupplier", param).then(function (result) {
+        _this.dialogVisible = true;
       }).catch()
     },
     handleClose() {
-  this.$confirm('确认关闭？')
-    .then(_ => {
-      this.dialogVisible=false
-    })
-    .catch(_ => {});
-},
-  onsubmit(){
-  var _this=this;
-  var param=new URLSearchParams();
-  for (let key in this.feedback){
-    param.append(key,this.feedback[key])
-  }
-  this.$axios.post("/user/insertloginformation",param).then(function (result){
-    _this.dialogVisible=false;
-    _this.getdate();
-  }).catch()
-}
+      this.$confirm('确认关闭？')
+        .then(_ => {
+          this.dialogVisible = false
+        })
+        .catch(_ => {
+        });
+    },
+    onsubmit() {
+      var _this = this;
+      var param = new URLSearchParams();
+      for (let key in this.feedback) {
+        param.append(key, this.feedback[key])
+      }
+      this.$axios.post("/user/insertloginformation", param).then(function (result) {
+        _this.dialogVisible = false;
+        _this.getdate();
+      }).catch()
+    }
   },
   created() {
     this.getdate();
