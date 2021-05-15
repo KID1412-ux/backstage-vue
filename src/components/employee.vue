@@ -62,7 +62,7 @@
           </el-tooltip>
 
           <el-tooltip class="item" effect="dark" content="赋予新角色" placement="bottom">
-            <el-button type="success"  icon="el-icon-circle-plus" circle></el-button>
+            <el-button type="success" icon="el-icon-circle-plus" circle></el-button>
           </el-tooltip>
 
         </template>
@@ -91,10 +91,10 @@
           <el-input v-model="emp.phone"></el-input>
         </el-form-item>
         <el-form-item label="员工性别">
-        <el-select v-model="emp.sex">
-          <el-option  value="0" label="男"></el-option>
-          <el-option  value="1" label="女"></el-option>
-        </el-select>
+          <el-select v-model="emp.sex">
+            <el-option value="0" label="男"></el-option>
+            <el-option value="1" label="女"></el-option>
+          </el-select>
         </el-form-item>
         <el-form-item label="员工状态">
           <el-select v-model="emp.stats">
@@ -127,8 +127,8 @@
         </el-form-item>
         <el-form-item label="员工性别">
           <el-select v-model="emplo.sex">
-            <el-option  value="0" label="男"></el-option>
-            <el-option  value="1" label="女"></el-option>
+            <el-option value="0" label="男"></el-option>
+            <el-option value="1" label="女"></el-option>
           </el-select>
         </el-form-item>
       </el-form>
@@ -141,87 +141,89 @@
 <script>
 export default {
   name: "employee",
-  data(){
+  data() {
     return {
-      tableData:[],
-      emp:{},
-      employee:false,
-      employees:false,
-      emplo:{
-        employeeName:'',
-        employeeNo:'',
-        password:'',
-        phone:'',
-        sex:'',
-        stats:'0'
+      tableData: [],
+      emp: {},
+      employee: false,
+      employees: false,
+      emplo: {
+        employeeName: '',
+        employeeNo: '',
+        password: '',
+        phone: '',
+        sex: '',
+        stats: '0'
       },
     }
   },
-  methods:{
-    getdata(){
-      var _this=this;
-      this.$axios.post("/emp/selectallemployee").then(function (result){
-        _this.tableData=result.data;
+  methods: {
+    getdata() {
+      var _this = this;
+      this.$axios.post("/emp/selectallemployee").then(function (result) {
+        _this.tableData = result.data;
       }).catch()
     },
     handleClose() {
       this.$confirm('确认关闭？')
         .then(_ => {
-          this.employee=false;
+          this.employee = false;
         })
-        .catch(_ => {});
-    },
-    update(id){
-      var _this=this
-      var param=new URLSearchParams();
-      param.append("id",id);
-      this.$axios.post("/emp/selectemployeebyid",param).then(function (result){
-        _this.emp=result.data;
-        _this.employee=true;
-      }).catch()
-    },
-    onsubmit(){
-      var _this=this;
-      var param=new URLSearchParams();
-      for (let key in _this.emp){
-        param.append(key,_this.emp[key])
-      }
-      this.$axios.post("/emp/updateemployee",param).then(function (result){
-            _this.getdata();
-            _this.$message({
-          showClose: true,
-          message: result.data,
-          type: 'success'
+        .catch(_ => {
         });
-            _this.employee=false;
+    },
+    update(id) {
+      var _this = this
+      var param = new URLSearchParams();
+      param.append("id", id);
+      this.$axios.post("/emp/selectemployeebyid", param).then(function (result) {
+        _this.emp = result.data;
+        _this.employee = true;
       }).catch()
     },
-    add(){
-      this.employees=true;
-    },
-    close(){
-      this.$confirm('确认关闭？')
-        .then(_ => {
-          this.employees=false;
-        })
-        .catch(_ => {});
-    },
-    addemp(){
-      var _this=this
-      var param =new URLSearchParams();
-      for (let key in _this.emplo){
-        param.append(key,_this.emplo[key])
-        console.log(_this.emplo[key])
+    onsubmit() {
+      var _this = this;
+      var param = new URLSearchParams();
+      for (let key in _this.emp) {
+        param.append(key, _this.emp[key])
       }
-      this.$axios.post("/emp/addemployee",param).then(function (result){
+      this.$axios.post("/emp/updateemployee", param).then(function (result) {
         _this.getdata();
         _this.$message({
           showClose: true,
           message: result.data,
           type: 'success'
         });
-        _this.employees=false;
-        _this.emplo="";
+        _this.employee = false;
+      }).catch()
+    },
+    add() {
+      this.employees = true;
+    },
+    close() {
+      this.$confirm('确认关闭？')
+        .then(_ => {
+          this.employees = false;
+        })
+        .catch(_ => {
+        });
+    },
+    addemp() {
+      var _this = this
+      var param = new URLSearchParams();
+      for (let key in _this.emplo) {
+        param.append(key, _this.emplo[key])
+        console.log(_this.emplo[key])
+      }
+      this.$axios.post("/emp/addemployee", param).then(function (result) {
+        _this.getdata();
+        _this.$message({
+          showClose: true,
+          message: result.data,
+          type: 'success'
+        });
+        _this.employees = false;
+        _this.emplo = "";
       })
     }
   },
