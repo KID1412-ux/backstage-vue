@@ -11,6 +11,7 @@ import Employee from "../components/employee";
 import TypeMaintain from "../components/goods_data_maintain/type_maintain";
 import DataMaintain from "../components/goods_data_maintain/data_maintain";
 import PurchaseApply from "../components/purchase_manage/purchase_apply";
+import ApplicationRecord from "../components/purchase_manage/application_record";
 
 Vue.use(Router)
 
@@ -52,6 +53,10 @@ export default new Router({
           path: "/PurchaseApply",
           name: "PurchaseApply",
           component: PurchaseApply
+        }, {
+          path: "/ApplicationRecord",
+          name: "ApplicationRecord",
+          component: ApplicationRecord
         }]
       },
       {
