@@ -10,6 +10,7 @@ import Supplieruphold from "../components/supplieruphold";
 import Employee from "../components/employee";
 import TypeMaintain from "../components/goods_data_maintain/type_maintain";
 import DataMaintain from "../components/goods_data_maintain/data_maintain";
+import PurchaseApply from "../components/purchase_manage/purchase_apply";
 
 Vue.use(Router)
 
@@ -47,6 +48,10 @@ export default new Router({
           path: "/DataMaintain",
           name: "DataMaintain",
           component: DataMaintain
+        }, {
+          path: "/PurchaseApply",
+          name: "PurchaseApply",
+          component: PurchaseApply
         }]
       },
       {
