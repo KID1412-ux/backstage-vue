@@ -8,6 +8,10 @@ import Merchantuphold from "../components/merchantuphold"
 import Supplier from "../components/supplier";
 import Supplieruphold from "../components/supplieruphold";
 import Employee from "../components/employee";
+import Roles from "../components/roles";
+import Competence from "../components/competence";
+import Post from "../components/post";
+import Menus from "../components/menus";
 import TypeMaintain from "../components/goods_data_maintain/type_maintain";
 import DataMaintain from "../components/goods_data_maintain/data_maintain";
 import PurchaseApply from "../components/purchase_manage/purchase_apply";
@@ -53,10 +57,6 @@ export default new Router({
           path: "/PurchaseApply",
           name: "PurchaseApply",
           component: PurchaseApply
-        }, {
-          path: "/ApplicationRecord",
-          name: "ApplicationRecord",
-          component: ApplicationRecord
         }]
       },
       {

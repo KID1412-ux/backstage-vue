@@ -45,8 +45,7 @@
         width="145">
         <template slot-scope="scope">
           <el-tooltip class="item" effect="dark" content="修改商户信息" placement="bottom">
-            <el-button @click="select(scope.row.merchantId)" type="success" icon="el-icon-edit-outline"
-                       circle></el-button>
+            <el-button @click="select(scope.row.merchantId)" type="success" icon="el-icon-edit-outline" circle></el-button>
           </el-tooltip>
         </template>
       </el-table-column>
@@ -62,10 +61,10 @@
           <el-input v-model="user.merchantId" disabled></el-input>
         </el-form-item>
         <el-form-item label="商户名称">
-          <el-input v-model="user.merchantName"></el-input>
+          <el-input v-model="user.merchantName" ></el-input>
         </el-form-item>
         <el-form-item label="商户描述">
-          <el-input v-model="user.merchantDescribe"></el-input>
+          <el-input v-model="user.merchantDescribe" ></el-input>
         </el-form-item>
         <el-form-item label="商户电话">
           <el-input v-model="user.merchantPhone"></el-input>
@@ -74,9 +73,9 @@
           <el-input v-model="user.deliveryAddress"></el-input>
         </el-form-item>
         <el-form-item label="商户状态">
-          <el-select v-model="user.merchantStats">
-            <el-option value="0" label="正常"></el-option>
-            <el-option value="1" label="拉黑"></el-option>
+          <el-select v-model="user.merchantStats" >
+            <el-option  value="0" label="正常"></el-option>
+            <el-option  value="1" label="拉黑"></el-option>
           </el-select>
         </el-form-item>
 
@@ -94,59 +93,55 @@ export default {
   data() {
     return {
       tableData: [],
-      user: {},
-      dialogVisible: false,
+      user:{},
+      dialogVisible:false,
     }
   },
-  methods: {
-    getdate() {
-      var _this = this;
-      this.$axios.post("/user/selectmerchant").then(function (result) {
-        _this.tableData = result.data;
+  methods:{
+    getdate(){
+      var _this=this;
+      this.$axios.post("/user/selectmerchant").then(function (result){
+        _this.tableData=result.data;
       }).catch()
     },
-    select(id) {
-      this.dialogVisible = true;
-      var _this = this
+    select(id){
+      this.dialogVisible=true;
+      var _this=this
 
-      var param = new URLSearchParams();
-      param.append("id", id);
-      this.$axios.post("/user/selectbymerchantId", param).then(function (result) {
-        _this.user = result.data
+      var param=new URLSearchParams();
+      param.append("id",id);
+      this.$axios.post("/user/selectbymerchantId",param).then(function (result){
+        _this.user=result.data
         _this.dialogVisible = true
       }).catch()
     },
-    onsubmit() {
-      var _this = this;
+    onsubmit(){
+      var _this=this;
 
-      var param = new URLSearchParams();
+      var param=new URLSearchParams();
 
-      for (let key in this.user) {
-        param.append(key, this.user[key]);
+      for(let key in this.user){
+        param.append(key,this.user[key]);
         console.log(param.get(key));
       }
       console.log(param)
-      this.$axios.post("/user/updatemerchant", param).then(function (result) {
+      this.$axios.post("/user/updatemerchant",param).then(function (result){
         _this.$message({
           showClose: true,
           message: result.data,
           type: 'success'
         });
         _this.getdate();
-        _this.dialogVisible = false;
+        _this.dialogVisible=false;
       }).catch()
 
     },
     handleClose() {
-      this.$confirm('确认关闭？')
-        .then(_ => {
-          this.dialogVisible = false
-        })
-        .catch(_ => {
-        });
+          this.dialogVisible=false
+
     }
-  }
-  , created() {
+    }
+ ,created() {
     this.getdate();
   }
 }
