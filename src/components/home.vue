@@ -4,18 +4,19 @@
       <el-header>Header</el-header>
       <el-container>
         <el-aside width="200px">
-            <el-menu :default-active="this.$route.path" class="el-menu-vertical-demo" @open="handleOpen" @close="handleClose"
-                     background-color="#545c64" text-color="#fff" active-text-color="#ffd04b" router>
+          <el-menu :default-active="this.$route.path" class="el-menu-vertical-demo" @open="handleOpen"
+                   @close="handleClose"
+                   background-color="#545c64" text-color="#fff" active-text-color="#ffd04b" router>
             <el-submenu v-for="lis in list" class="li" :index="lis.id+''">
-                <template slot="title">
-                  <i class="el-icon-location"></i>
-                  <span>{{lis.competenceName}}</span>
-                </template>
-                <el-menu-item-group v-for="menus in lis.menus">
-                  <el-menu-item :index="menus.menuUrl">{{menus.menuName}}</el-menu-item>
-                </el-menu-item-group>
-              </el-submenu>
-            </el-menu>
+              <template slot="title">
+                <i class="el-icon-location"></i>
+                <span>{{ lis.competenceName }}</span>
+              </template>
+              <el-menu-item-group v-for="menus in lis.menus">
+                <el-menu-item :index="menus.menuUrl">{{ menus.menuName }}</el-menu-item>
+              </el-menu-item-group>
+            </el-submenu>
+          </el-menu>
         </el-aside>
         <el-container>
           <el-main>
@@ -31,34 +32,34 @@
 <script>
 
 export default {
-  name:"home",
-    methods: {
-      handleOpen(key,keyPath) {
-        console.log(key, keyPath);
-      },
-      handleClose(key, keyPath) {
-        console.log(key, keyPath);
-      },
-      getdate(id){
-        var _this=this;
+  name: "home",
+  methods: {
+    handleOpen(key, keyPath) {
+      console.log(key, keyPath);
+    },
+    handleClose(key, keyPath) {
+      console.log(key, keyPath);
+    },
+    getdate(id) {
+      var _this = this;
 
-        var param=new URLSearchParams();
-        param.append("id",id)
+      var param = new URLSearchParams();
+      param.append("id", id)
 
 
-        this.$axios.post("/com/list",param).then(function (result){
-          _this.list=result.data;
-        }).catch()
-      }
+      this.$axios.post("/com/list", param).then(function (result) {
+        _this.list = result.data;
+      }).catch()
     }
+  }
   ,
-  created(){
-    var id=sessionStorage.getItem("id")
+  created() {
+    var id = sessionStorage.getItem("id")
     this.getdate(id);
   },
-  data(){
-    return{
-      list:[]
+  data() {
+    return {
+      list: []
     }
   },
   computed: {
@@ -95,9 +96,11 @@ export default {
   color: #333;
   text-align: center;
 }
-.li{
+
+.li {
   width: 100%;
 }
+
 body > .el-container {
   margin-bottom: 40px;
 }
@@ -110,7 +113,8 @@ body > .el-container {
 .el-container:nth-child(7) .el-aside {
   line-height: 320px;
 }
-.footer{
+
+.footer {
   position: absolute;
   left: 0;
   top: 0;
@@ -118,7 +122,7 @@ body > .el-container {
   width: 100%;
 }
 
-.el-menu{
+.el-menu {
   height: 100%;
   text-align: left;
 }
