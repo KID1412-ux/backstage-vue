@@ -137,11 +137,8 @@ export default {
 
     },
     handleClose() {
-      this.$confirm('确认关闭？')
-        .then(_ => {
           this.dialogVisible=false
-        })
-        .catch(_ => {});
+
     }
     }
  ,created() {

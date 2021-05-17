@@ -120,11 +120,7 @@ export default {
         _this.dialogVisible=true;
       }).catch()
     }, handleClose() {
-      this.$confirm('确认关闭？')
-        .then(_ => {
           this.dialogVisible=false
-        })
-        .catch(_ => {});
     },
     onsubmit(){
       var param=new URLSearchParams();

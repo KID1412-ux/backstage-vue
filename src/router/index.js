@@ -8,6 +8,10 @@ import Merchantuphold from "../components/merchantuphold"
 import Supplier from "../components/supplier";
 import Supplieruphold from "../components/supplieruphold";
 import Employee from "../components/employee";
+import Roles from "../components/roles";
+import Competence from "../components/competence";
+import Post from "../components/post";
+import Menus from "../components/menus";
 
 Vue.use(Router)
 
@@ -37,6 +41,22 @@ export default new Router({
           path: "/Employee",
           name: "Employee",
           component: Employee
+        },{
+          path: "/Roles",
+          name: "Roles",
+          component: Roles
+        },{
+          path: "/Competence",
+          name: "Competence",
+          component: Competence
+        },{
+          path: "/Post",
+          name: "Post",
+          component: Post
+        },{
+          path: "/Menus",
+          name: "Menus",
+          component: Menus
         }]
       },
       {
