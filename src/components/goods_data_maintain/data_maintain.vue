@@ -353,7 +353,7 @@ export default {
       params.append("pageSize", this.pageSize);
       params.append("pageNo", this.pageNo);
       this.$axios.post("goodsMain/showGoods", params).then(function (result) {
-        _this.tableData = result.data.list.map(item => {
+        _this.tableData = result.data.records.map(item => {
           item.imageUrl = "http://127.0.0.1:8090/code/" + item.imageUrl;
           return item;
         });
@@ -361,7 +361,6 @@ export default {
       }).catch();
     },
     getType() {
-      this.continuousLoad();
       var _this = this;
       this.$axios.post("goodsMain/showType").then(function (result) {
         _this.data = result.data;
