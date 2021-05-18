@@ -424,13 +424,13 @@ export default {
           result.data.imageUrl = "http://127.0.0.1:8090/code/" + result.data.imageUrl;
         }
         _this.updateForm = result.data;
-        if (result.data.firstKindId && result.data.firstKindId != null) {
+        if (result.data.firstKindId && result.data.firstKindId != 'null') {
           _this.updateVal = JSON.parse(result.data.firstKindId);
         }
-        if (result.data.secondKindId && result.data.secondKindId != null) {
+        if (result.data.secondKindId && result.data.secondKindId != 'null') {
           _this.updateVal = JSON.parse(result.data.secondKindId);
         }
-        if (result.data.thirdKindId && result.data.thirdKindId != null) {
+        if (result.data.thirdKindId && result.data.thirdKindId != 'null') {
           _this.updateVal = JSON.parse(result.data.thirdKindId);
         }
         _this.updateFormVisible = true;
@@ -509,7 +509,6 @@ export default {
           Object.keys(this.addForm).forEach((key) => {
             formData.append(key, _this.addForm[key]);
           })
-
           this.$axios({
             method: 'post',
             url: 'goodsMain/saveGoods',
@@ -557,7 +556,7 @@ export default {
           }
           var _this = this;
           var imageUrl = '';
-          if (this.updateForm.imageUrl && this.updateForm.imageUrl != null) {
+          if (this.updateForm.imageUrl) {
             imageUrl = this.updateForm.imageUrl.split("http://127.0.0.1:8090/code/")[1];
           }
           this.updateForm.imageUrl = imageUrl;
@@ -565,7 +564,6 @@ export default {
           Object.keys(this.updateForm).forEach((key) => {
             formData.append(key, _this.updateForm[key]);
           })
-
           this.$axios({
             method: 'post',
             url: 'goodsMain/updateGoods',

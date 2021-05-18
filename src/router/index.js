@@ -14,9 +14,6 @@ import Post from "../components/post";
 import Menus from "../components/menus";
 import TypeMaintain from "../components/goods_data_maintain/type_maintain";
 import DataMaintain from "../components/goods_data_maintain/data_maintain";
-
-import TypeMaintain from "../components/goods_data_maintain/type_maintain";
-import DataMaintain from "../components/goods_data_maintain/data_maintain";
 import PurchaseApply from "../components/purchase_manage/purchase_apply";
 import ApplicationRecord from "../components/purchase_manage/application_record";
 import AuditRecord from "../components/purchase_manage/audit_record";
@@ -50,6 +47,22 @@ export default new Router({
           path: "/Employee",
           name: "Employee",
           component: Employee
+        }, {
+          path: "/Roles",
+          name: "Roles",
+          component: Roles
+        }, {
+          path: "/Competence",
+          name: "Competence",
+          component: Competence
+        }, {
+          path: "/Post",
+          name: "Post",
+          component: Post
+        }, {
+          path: "/Menus",
+          name: "Menus",
+          component: Menus
         }, {
           path: "/TypeMaintain",
           name: "TypeMaintain",

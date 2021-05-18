@@ -12,7 +12,7 @@
       </el-header>
       <el-container>
         <el-aside width="200px">
-          <el-menu :default-active="this.$route.path" class="el-menu-vertical-demo" @open="handleOpen"
+          <el-menu :unique-opened="true" :default-active="this.$route.path" class="el-menu-vertical-demo" @open="handleOpen"
                    @close="handleClose"
                    background-color="#545c64" text-color="#fff" active-text-color="#ffd04b" router>
             <el-submenu v-for="lis in list" class="li" :index="lis.id+''">
