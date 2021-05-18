@@ -21,13 +21,14 @@
           stripe
           ref="multipleTable"
           v-loading="loading"
-          :default-sort="{prop: 'roadTime', order: 'descending'}"
+          :default-sort="{prop: 'checkTime', order: 'descending'}"
           @selection-change="handleSelectionChange"
           :row-key="getRowKey"
           style="width: 100%">
           <el-table-column
             label="采购单号"
-            width="200">
+            fixed="left"
+            width="169">
             <template slot-scope="scope">
               <el-popover
                 placement="right"
@@ -65,22 +66,45 @@
             width="160">
           </el-table-column>
           <el-table-column
-            prop="roadTime"
-            sortable
-            label="登记日期"
-            width="189">
+            prop="supplierName"
+            label="供应商店铺名"
+            width="210">
           </el-table-column>
           <el-table-column
             label="审核状态"
             width="160">
             <template slot-scope="scope">
-              {{ scope.row.stats | filter }}
+              <div v-if="scope.row.stats == '2'">
+                <el-popover
+                  placement="right"
+                  width="290"
+                  trigger="click">
+                  <el-table :row-key="getRowKey" max-height="300"
+                            stripe
+                            :default-sort="{prop: 'id', order: 'descending'}"
+                            :data="logData">
+                    <el-table-column width="280" property="logdetail" label="说明信息"></el-table-column>
+                  </el-table>
+                  <el-link :underline="false" slot="reference" @click="description(scope.row.id)" type="warning">
+                    {{ scope.row.stats | filter }}
+                  </el-link>
+                </el-popover>
+              </div>
+              <div v-else>
+                {{ scope.row.stats | filter }}
+              </div>
             </template>
           </el-table-column>
           <el-table-column
-            prop="supplierName"
-            label="供应商店铺名"
-            width="210">
+            prop="checker"
+            label="审核人"
+            width="160">
+          </el-table-column>
+          <el-table-column
+            prop="checkTime"
+            sortable
+            label="审核时间"
+            width="189">
           </el-table-column>
         </el-table>
       </div>
@@ -101,7 +125,7 @@
 
 <script>
 export default {
-  name: "application_record",
+  name: "audit_record",
   data() {
     return {
       tableData: [],
@@ -123,7 +147,6 @@ export default {
       var params = new URLSearchParams();
       params.append("purchaseEmployeeId", this.search.purchaseEmployeeId);
       params.append("purchaseNo", this.search.purchaseNo);
-      params.append("stats", "0");
       params.append("pageSize", this.pageSize);
       params.append("pageNo", this.pageNo);
       this.$axios.post("purchase/queryByPage", params).then(function (result) {
@@ -171,9 +194,12 @@ export default {
     description(id) {
       var _this = this;
       var params = new URLSearchParams();
-      params.append("purchaseId", id);
+      params.append("parentID", id);
       this.$axios.post("purchase/queryLogByParentID", params).then(function (result) {
-        _this.logData = result.data;
+        _this.logData = [];
+        if (result.data) {
+          _this.logData.push(result.data);
+        }
       }).catch();
     }
   },

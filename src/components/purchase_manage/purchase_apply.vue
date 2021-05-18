@@ -166,7 +166,7 @@
       </el-divider>
       <el-tabs v-model="activeName" type="card" @tab-click="handleClick">
         <el-tab-pane v-for="(item, index) in tabsData" :name="String(item.id)" @tab-click="handleClick"
-                     :label="item.merchantName">
+                     :label="item.supplierName">
           <el-table
             v-loading="encase"
             :data="activeData"
@@ -203,7 +203,7 @@
         content-position="left">
         选择采购员
       </el-divider>
-      <el-select v-model="employeeId" placeholder="请选择">
+      <el-select v-model="employeeId" placeholder="请选择采购员" clearable>
         <el-option
           v-for="item in options"
           :key="item.id"
@@ -241,8 +241,8 @@ export default {
       activeData: [],
       value: false,
       options: [],
-      employeeId: -1,
-      supplierId: -1
+      employeeId: '',
+      supplierId: ''
     };
   },
   methods: {
@@ -438,6 +438,7 @@ export default {
         totalPrice += item.amount * item.goodsPrice;
       })
       var _this = this;
+
       function savePurchase() {
         var params = new URLSearchParams();
         params.append("purchaseEmployeeId", _this.employeeId);
@@ -447,6 +448,7 @@ export default {
         params.append("supplierId", _this.supplierId);
         return _this.$axios.post("purchase/savePurchase", params);
       }
+
       function saveDetailBatch(detailBatch) {
         return _this.$axios({
           method: 'post',
@@ -457,15 +459,16 @@ export default {
           }
         });
       }
+
       savePurchase().then(function (result) {
         var detailBatch = [];
-        _this.dialogData.forEach(item => {
+        _this.dialogData.forEach((item, index) => {
           var json = {};
           json.purchaseId = result.data;
-          json.goodsId = item.id;
+          json.goodsId = nary[index].id;
           json.amount = item.amount;
           detailBatch.push(json);
-        })
+        });
         saveDetailBatch(detailBatch).then(function (result) {
           _this.dialogClose();
           _this.dialogTableVisible = false;
