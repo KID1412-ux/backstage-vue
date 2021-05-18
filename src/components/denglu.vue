@@ -1,9 +1,8 @@
 <template>
   <div>
     <el-container class="footer">
-      <el-header style="background: red">
-      </el-header>
-      <el-main>
+      <el-header ></el-header>
+      <el-main style="margin-top: 100px">
         <el-row>
           <el-col :span="8">
             <div class="grid-content"></div>
@@ -48,7 +47,7 @@
           </el-col>
         </el-row>
       </el-main>
-      <el-footer style="background: yellow">Footer</el-footer>
+      <el-footer></el-footer>
     </el-container>
 
   </div>
@@ -124,6 +123,9 @@ a {
 }
 
 .footer {
+  background-image: url("../img/bj2.jpg");
+  background-repeat: no-repeat;
+  background-size:100% 100%;
   position: absolute;
   left: 0;
   top: 0;

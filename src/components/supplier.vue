@@ -9,22 +9,38 @@
         fixed
         prop="id"
         label="用户ID"
-        width="150">
+        width="100">
       </el-table-column>
       <el-table-column
         prop="supplierName"
         label="供应商名称"
-        width="150">
+        width="100">
+      </el-table-column>
+      <el-table-column
+        prop="merchantPermitImage"
+        label="供应商营业执照"
+        width="180">
+        <template scope="scope">
+          <img :src="scope.row.supplierPermitImage" width="40" height="40">
+        </template>
+      </el-table-column>
+      <el-table-column
+        prop="merchantShopImage"
+        label="供应商图"
+        width="100">
+        <template scope="scope">
+          <img :src="scope.row.supplierShopImage" width="40" height="40">
+        </template>
       </el-table-column>
       <el-table-column
         prop="supplierPhone"
         label="供应商电话"
-        width="250">
+        width="200">
       </el-table-column>
       <el-table-column
         prop="supplierAddress"
         label="供应商地址"
-        width="250">
+        width="200">
       </el-table-column>
       <el-table-column
         prop="supplierAuditStatus"
@@ -91,8 +107,11 @@ export default {
       var _this=this;
 
       this.$axios.post("/user/selectallsupplier").then(function (result){
-        _this.tableData=result.data;
-        console.log(_this.tableData)
+        _this.tableData=result.data.map(function (item) {
+          item.supplierPermitImage="http://127.0.0.1:8090/code/"+item.supplierPermitImage;
+          item.supplierShopImage="http://127.0.0.1:8090/code/"+item.supplierShopImage;
+          return item;
+        });
       }).catch()
     },
     pass(id){
@@ -124,7 +143,7 @@ export default {
   for (let key in this.feedback){
     param.append(key,this.feedback[key])
   }
-  this.$axios.post("/user/insertloginformation",param).then(function (result){
+  this.$axios.post("/user/failsupplier",param).then(function (result){
     _this.dialogVisible=false;
     _this.getdate();
   }).catch()
