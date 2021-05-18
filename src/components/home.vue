@@ -1,7 +1,15 @@
 <template>
   <div>
     <el-container class="footer">
-      <el-header>Header</el-header>
+      <el-header>
+        <div style="height: 5%;">
+        <div style="float: left">
+        </div>
+        <div style="float: right">
+          <el-button style='position: absolute;right:50px; margin-top: 10px' round @click="tuichu">退出登录</el-button>
+        </div>
+      </div>
+      </el-header>
       <el-container>
         <el-aside width="200px">
           <el-menu :default-active="this.$route.path" class="el-menu-vertical-demo" @open="handleOpen"
@@ -22,7 +30,10 @@
           <el-main>
             <router-view></router-view>
           </el-main>
-          <el-footer>Footer</el-footer>
+          <el-footer>
+            @本系统最终解释权归本小组所有
+            @2021-5-18 10:13
+          </el-footer>
         </el-container>
       </el-container>
     </el-container>
@@ -50,6 +61,10 @@ export default {
       this.$axios.post("/com/list", param).then(function (result) {
         _this.list = result.data;
       }).catch()
+    },
+    tuichu(){
+      sessionStorage.clear();
+      this.$router.push("/")
     }
   }
   ,
