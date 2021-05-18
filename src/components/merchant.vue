@@ -9,27 +9,43 @@
         fixed
         prop="id"
         label="用户ID"
-        width="150">
+        width="100">
       </el-table-column>
       <el-table-column
         prop="merchantName"
         label="商户名称"
-        width="150">
+        width="100">
+      </el-table-column>
+      <el-table-column
+        prop="merchantPermitImage"
+        label="商户营业执照"
+        width="180">
+        <template scope="scope">
+          <img :src="scope.row.merchantPermitImage" width="40" height="40">
+        </template>
+      </el-table-column>
+      <el-table-column
+        prop="merchantShopImage"
+        label="商户店铺图"
+        width="100">
+        <template scope="scope">
+          <img :src="scope.row.merchantShopImage" width="40" height="40">
+        </template>
       </el-table-column>
       <el-table-column
         prop="merchantDescribe"
         label="商户描述"
-        width="250">
+        width="200">
       </el-table-column>
       <el-table-column
         prop="merchantPhone"
         label="商户电话"
-        width="150">
+        width="100">
       </el-table-column>
       <el-table-column
         prop="deliveryAddress"
         label="提货地址"
-        width="280">
+        width="200">
       </el-table-column>
       <el-table-column
         prop="merchantAuditStatus"
@@ -96,8 +112,13 @@ export default {
       var _this=this;
 
       this.$axios.post("/user/selectallmerchant").then(function (result){
-        _this.tableData=result.data;
+        _this.tableData=result.data.map(function (item) {
+          item.merchantPermitImage="http://127.0.0.1:8090/code/"+item.merchantPermitImage;
+          item.merchantShopImage="http://127.0.0.1:8090/code/"+item.merchantShopImage;
+          return item;
+        })
         console.log(_this.tableData)
+
       }).catch()
     },
     pass(id){
@@ -123,13 +144,14 @@ export default {
           this.dialogVisible=false
     },
     onsubmit(){
+      var _this=this;
       var param=new URLSearchParams();
       for (let key in this.feedback){
         param.append(key,this.feedback[key])
       }
-      this.$axios.post("/user/insertloginformation",param).then(function (result){
-            this.dialogVisible=false;
-            this.getdate();
+      this.$axios.post("/user/fail",param).then(function (result){
+        _this.dialogVisible=false;
+        _this.getdate();
       }).catch()
     }
   },

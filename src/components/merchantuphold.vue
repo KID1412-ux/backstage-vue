@@ -58,7 +58,7 @@
       <el-form :model="user">
 
         <el-form-item label="商户ID">
-          <el-input v-model="user.merchantId" disabled></el-input>
+          <el-input v-model="user.id" disabled></el-input>
         </el-form-item>
         <el-form-item label="商户名称">
           <el-input v-model="user.merchantName" ></el-input>
@@ -122,7 +122,6 @@ export default {
 
       for(let key in this.user){
         param.append(key,this.user[key]);
-        console.log(param.get(key));
       }
       console.log(param)
       this.$axios.post("/user/updatemerchant",param).then(function (result){
