@@ -20,7 +20,10 @@ import AuditRecord from "../components/purchase_manage/audit_record";
 import DataReview from "../components/purchase_manage/data_review";
 import Car from "../components/Content";
 import Delivery from "../components/Delivery";
+import WarehousingAudit from "../components/goods_storage/warehousing_audit";
+import HistoryRecord from "../components/goods_storage/history_record";
 import Useruphold from "../components/useruphold";
+
 Vue.use(Router)
 
 export default new Router({
@@ -97,6 +100,14 @@ export default new Router({
           path: "/Delivery",
           name: "Delivery",
           component: Delivery
+        }, {
+          path: "/WarehousingAudit",
+          name: "WarehousingAudit",
+          component: WarehousingAudit
+        }, {
+          path: "/HistoryRecord",
+          name: "HistoryRecord",
+          component: HistoryRecord
         }, {
           path: "/Useruphold",
           name: "Useruphold",

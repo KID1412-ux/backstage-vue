@@ -377,9 +377,11 @@ export default {
         _this.dialogData = res1.data.map((item, index) => {
           return Object.assign(item, {amount: 1});
         });
-        _this.activeName = String(res2.data[0].id);
-        _this.tabsData = res2.data;
-        _this.getActiveData(res2.data[0].id);
+        if (res2.data) {
+          _this.activeName = String(res2.data[0].id);
+          _this.tabsData = res2.data;
+          _this.getActiveData(res2.data[0].id);
+        }
         _this.options = res3.data;
         _this.employeeId = res3.data[0].id;
         _this.dialogTableVisible = true;
@@ -483,6 +485,8 @@ export default {
     dialogClose() {
       this.$refs.multipleTable.clearSelection();
       this.value = false;
+      this.tabsData = [];
+      this.activeData = [];
       this.employeeId = -1;
     }
   },
