@@ -130,7 +130,7 @@
         max-height="270">
         <el-table-column
           prop="id"
-          label="商品ID"
+          label="ID"
           sortable
           width="121">
         </el-table-column>
@@ -268,6 +268,7 @@ export default {
       var params = new URLSearchParams();
       params.append("id", this.form.id);
       params.append("checker", this.checker);
+      params.append("checkTime", new Date());
       params.append("stats", '1');
       this.$axios.post("purchase/updatePurchase", params).then(function (result) {
         _this.$message({
@@ -294,6 +295,7 @@ export default {
         var params = new URLSearchParams();
         params.append("id", _this.form.id);
         params.append("checker", _this.checker);
+        params.append("checkTime", new Date());
         params.append("stats", '2');
         return _this.$axios.post("purchase/updatePurchase", params);
       }
