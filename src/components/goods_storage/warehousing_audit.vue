@@ -309,8 +309,9 @@ export default {
           return;
         }
         var nary = [];
+        var count = 0;
         result.data.forEach(item => {
-          var count = total + item.currentReserves;
+          count += total + item.currentReserves;
           var capacity = item.warehouseCapacity;
           if (count <= capacity) {
             nary.push(item);
@@ -325,6 +326,12 @@ export default {
           return;
         }
         var warehouse = nary[0];
+        function updateWarehouse() {
+          var params = new URLSearchParams();
+          params.append("id", warehouse.id);
+          params.append("currentReserves", count);
+          return _this.$axios.post("stock/updateWarehouse", params);
+        }
         var batch = [];
         _this.detailsData.forEach(item => {
           var json = {};
@@ -333,7 +340,7 @@ export default {
           json.goodsAmount = item.goodsAmount;
           batch.push(json);
         });
-        _this.$axios.all([updateGoodsStocks(batch), updateStockById()]).then(_this.$axios.spread(function (res1, res2) {
+        _this.$axios.all([updateGoodsStocks(batch), updateStockById(), updateWarehouse()]).then(_this.$axios.spread(function (res1, res2, res3) {
             _this.$message({
               showClose: true,
               message: '审核通过',
