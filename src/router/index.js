@@ -20,7 +20,7 @@ import AuditRecord from "../components/purchase_manage/audit_record";
 import DataReview from "../components/purchase_manage/data_review";
 import Car from "../components/Content";
 import Delivery from "../components/Delivery";
-
+import Useruphold from "../components/useruphold";
 Vue.use(Router)
 
 export default new Router({
@@ -97,6 +97,10 @@ export default new Router({
           path: "/Delivery",
           name: "Delivery",
           component: Delivery
+        }, {
+          path: "/Useruphold",
+          name: "Useruphold",
+          component: Useruphold
         }]
       },
       {

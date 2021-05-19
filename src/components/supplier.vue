@@ -143,7 +143,7 @@ export default {
   for (let key in this.feedback){
     param.append(key,this.feedback[key])
   }
-  this.$axios.post("/user/failsupplier",param).then(function (result){
+  this.$axios.post("/user/insertloginformation",param).then(function (result){
     _this.dialogVisible=false;
     _this.getdate();
   }).catch()

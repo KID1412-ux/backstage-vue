@@ -57,7 +57,7 @@
     </div>
 
     <el-dialog
-      title="修改权限信息"
+      title="修改职务信息"
       :visible="updatepost"
       width="30%"
       :before-close="handleClose">
@@ -69,7 +69,7 @@
           <el-input v-model="posts.postName"></el-input>
         </el-form-item>
         <el-form-item label="职务描述">
-          <el-input v-model="posts.competenceDescribe"></el-input>
+          <el-input v-model="posts.postDescribe"></el-input>
         </el-form-item>
       </el-form>
       <el-button type="info" @click="update()">确认</el-button>
