@@ -18,6 +18,8 @@ import PurchaseApply from "../components/purchase_manage/purchase_apply";
 import ApplicationRecord from "../components/purchase_manage/application_record";
 import AuditRecord from "../components/purchase_manage/audit_record";
 import DataReview from "../components/purchase_manage/data_review";
+import Car from "../components/Content";
+import Delivery from "../components/Delivery";
 
 Vue.use(Router)
 
@@ -87,6 +89,14 @@ export default new Router({
           path: "/DataReview",
           name: "DataReview",
           component: DataReview
+        }, {
+          path: "/Car",
+          name: "Car",
+          component: Car
+        }, {
+          path: "/Delivery",
+          name: "Delivery",
+          component: Delivery
         }]
       },
       {
