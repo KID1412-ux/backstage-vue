@@ -2,15 +2,16 @@
   <div>
     <el-card class="box-card">
       <div slot="header" class="clearfix">
-        <el-select v-model="search.purchaseEmployeeId" placeholder="请选择采购员" clearable>
-          <el-option
-            v-for="item in options"
-            :key="item.id"
-            :label="item.employeeName"
-            :value="item.id">
-          </el-option>
-        </el-select>
-        <el-input v-model="search.purchaseNo" placeholder="请输入采购单号" class="input-with-select input-with" clearable>
+        <el-date-picker
+          v-model="value"
+          type="daterange"
+          value-format="yyyy-MM-dd"
+          range-separator="至"
+          @change="valueChange"
+          start-placeholder="开始日期"
+          end-placeholder="结束日期">
+        </el-date-picker>
+        <el-input v-model="search.search_stockNo" placeholder="请输入入库单号" class="input-with-select input-with" clearable>
           <el-button slot="append" @click="searchData" icon="el-icon-search"></el-button>
         </el-input>
       </div>
@@ -26,43 +27,40 @@
           :row-key="getRowKey"
           style="width: 100%">
           <el-table-column
-            label="采购单号"
-            width="200">
+            label="入库单号"
+            width="208">
             <template slot-scope="scope">
-              {{ scope.row.purchaseNo }}
+              {{ scope.row.stockNo }}
             </template>
           </el-table-column>
           <el-table-column
-            label="采购员姓名"
-            prop="employeeName"
-            width="160">
-          </el-table-column>
-          <el-table-column
             prop="amount"
-            label="采购总数量"
-            width="160">
+            label="入库总数"
+            width="190">
           </el-table-column>
           <el-table-column
             prop="price"
-            label="采购总价"
-            width="160">
+            label="货值总价"
+            width="190">
           </el-table-column>
           <el-table-column
             prop="roadTime"
             sortable
-            label="登记日期"
-            width="189">
+            label="登记时间"
+            width="250">
           </el-table-column>
           <el-table-column
-            prop="supplierName"
-            label="供应商店铺名"
+            label="状态"
             width="210">
+            <template slot-scope="scope">
+              {{ scope.row.registerStats | filter }}
+            </template>
           </el-table-column>
           <el-table-column
             label="审核"
-            width="160">
+            width="190">
             <template slot-scope="scope">
-              <el-button type="primary" @click="review(scope.row.id)" icon="el-icon-edit" circle></el-button>
+              <el-button @click="applyFor(scope.row.id)" type="primary" icon="el-icon-edit" circle></el-button>
             </template>
           </el-table-column>
         </el-table>
@@ -79,28 +77,23 @@
         </el-pagination>
       </div>
     </el-card>
-    <el-dialog width="62%" title="采购单审核" :visible.sync="dialogTableVisible" center @close="dialogClose">
+    <el-dialog width="62%" title="入库申请" :visible.sync="dialogTableVisible" center @close="dialogClose">
       <el-divider
         content-position="left">
-        采购单信息
+        基本信息
       </el-divider>
       <el-form :model="form">
-        <el-form-item label="采购单号" :label-width="formLabelWidth">
+        <el-form-item label="入库单号" :label-width="formLabelWidth">
           <div class="form-input">
-            <el-input v-model="form.purchaseNo" autocomplete="off" disabled></el-input>
+            <el-input v-model="form.stockNo" autocomplete="off" disabled></el-input>
           </div>
         </el-form-item>
-        <el-form-item label="采购员姓名" :label-width="formLabelWidth">
-          <div class="form-input">
-            <el-input v-model="form.employeeName" autocomplete="off" disabled></el-input>
-          </div>
-        </el-form-item>
-        <el-form-item label="采购总数量" :label-width="formLabelWidth">
+        <el-form-item label="入库总数" :label-width="formLabelWidth">
           <div class="form-input">
             <el-input v-model="form.amount" autocomplete="off" disabled></el-input>
           </div>
         </el-form-item>
-        <el-form-item label="采购总价" :label-width="formLabelWidth">
+        <el-form-item label="货值总价" :label-width="formLabelWidth">
           <div class="form-input">
             <el-input v-model="form.price" autocomplete="off" disabled></el-input>
           </div>
@@ -110,15 +103,15 @@
             <el-input v-model="form.roadTime" autocomplete="off" disabled></el-input>
           </div>
         </el-form-item>
-        <el-form-item label="供应商店铺名" :label-width="formLabelWidth">
+        <el-form-item label="申请方" :label-width="formLabelWidth">
           <div class="form-input">
-            <el-input v-model="form.supplierName" autocomplete="off" disabled></el-input>
+            <el-input v-model="form.merchantName" autocomplete="off" disabled></el-input>
           </div>
         </el-form-item>
       </el-form>
       <el-divider
         content-position="left">
-        采购单详情
+        详细信息
       </el-divider>
       <el-table
         :row-key="getRowKey"
@@ -132,27 +125,22 @@
           prop="id"
           label="ID"
           sortable
-          width="121">
+          width="190">
         </el-table-column>
         <el-table-column
           prop="goodsName"
           label="商品名称"
-          width="320">
+          width="321">
         </el-table-column>
         <el-table-column
-          prop="goodsPrice"
-          label="供应商售价"
-          width="150">
-        </el-table-column>
-        <el-table-column
-          label="采购数量"
-          prop="amount"
-          width="150">
+          label="入库数量"
+          prop="goodsAmount"
+          width="190">
         </el-table-column>
         <el-table-column
           prop="goodsUnit"
           label="计量单位"
-          width="150">
+          width="190">
         </el-table-column>
       </el-table>
       <el-divider
@@ -172,44 +160,44 @@
 
 <script>
 export default {
-  name: "data_review",
+  name: "submit_application",
   data() {
     return {
       tableData: [],
+      search: {
+        search_stockNo: '',
+        search_StartingTime: '',
+        search_endTime: '',
+        search_registerStats: '1',
+      },
       pageNo: 1,
       pageSize: 10,
       total: 0,
       loading: false,
       multipleSelection: [],
-      search: {purchaseEmployeeId: '', purchaseNo: ''},
-      options: [],
-      detailsData: [],
+      value: '',
+      formLabelWidth: '120px',
       dialogTableVisible: false,
       form: {},
-      formLabelWidth: '120px',
+      detailsData: [],
       checker: ''
-    };
+    }
   },
   methods: {
     getData() {
       this.continuousLoad();
       var _this = this;
       var params = new URLSearchParams();
-      params.append("purchaseEmployeeId", this.search.purchaseEmployeeId);
-      params.append("purchaseNo", this.search.purchaseNo);
-      params.append("stats", "0");
-      params.append("pageSize", this.pageSize);
+      params.append("search_stockNo", this.search.search_stockNo);
+      params.append("search_StartingTime", this.search.search_StartingTime);
+      params.append("search_endTime", this.search.search_endTime);
+      params.append("search_registerStats", this.search.search_registerStats);
       params.append("pageNo", this.pageNo);
-      this.$axios.post("purchase/queryByPage", params).then(function (result) {
-        _this.tableData = result.data.list;
+      params.append("pageSize", this.pageSize);
+      this.$axios.post("stock/page", params).then(function (result) {
+        _this.tableData = result.data.records;
         _this.total = result.data.total;
-      }).catch();
-    },
-    selectBuyer() {
-      var _this = this;
-      this.$axios.post("purchase/selectBuyer").then(function (result) {
-        _this.options = result.data;
-      }).catch();
+      }).then();
     },
     handleSelectionChange(val) {
       this.multipleSelection = val;
@@ -231,27 +219,36 @@ export default {
       this.pageNo = val;
       this.getData();
     },
+    valueChange(val) {
+      if (val) {
+        this.search.search_StartingTime = this.value[0];
+        this.search.search_endTime = this.value[1];
+      } else {
+        this.search.search_StartingTime = '';
+        this.search.search_endTime = '';
+      }
+    },
     searchData() {
       this.getData();
     },
-    review(id) {
+    applyFor(id) {
       var _this = this;
 
-      function queryDetailByPurchaseId() {
-        var params = new URLSearchParams();
-        params.append("purchaseId", id);
-        return _this.$axios.post("purchase/queryDetailByPurchaseId", params);
-      }
-
-      function queryPurchaseById() {
+      function queryStockById() {
         var params = new URLSearchParams();
         params.append("id", id);
-        return _this.$axios.post("purchase/queryPurchaseById", params);
+        return _this.$axios.post("stock/queryStockById", params);
       }
 
-      this.$axios.all([queryDetailByPurchaseId(), queryPurchaseById()]).then(this.$axios.spread(function (res1, res2) {
-        _this.form = res2.data;
-        _this.detailsData = res1.data;
+      function queryDetail() {
+        var params = new URLSearchParams();
+        params.append("stockId", id);
+        return _this.$axios.post("stock/queryDetail", params);
+      }
+
+      this.$axios.all([queryStockById(), queryDetail()]).then(this.$axios.spread(function (res1, res2) {
+        _this.form = res1.data;
+        _this.detailsData = res2.data;
         _this.dialogTableVisible = true;
       })).catch();
     },
@@ -265,19 +262,86 @@ export default {
         return;
       }
       var _this = this;
-      var params = new URLSearchParams();
-      params.append("id", this.form.id);
-      params.append("checker", this.checker);
-      params.append("checkTime", new Date());
-      params.append("stats", '1');
-      this.$axios.post("purchase/updatePurchase", params).then(function (result) {
-        _this.$message({
-          showClose: true,
-          message: '审核通过',
-          type: 'success'
+      var ids = this.detailsData.map(item => item = item.goodsId);
+      var total = 0;
+      this.detailsData.forEach(item => {
+        total += item.goodsAmount;
+      });
+
+      function queryWarehouse() {
+        return _this.$axios({
+          method: 'post',
+          url: 'stock/queryWarehouse',
+          data: JSON.stringify(ids),
+          headers: {
+            'Content-Type': 'application/json;charset=UTF-8'
+          }
         });
-        _this.dialogTableVisible = false;
-        _this.getData();
+      }
+
+      function updateGoodsStocks(batch) {
+        return _this.$axios({
+          method: 'post',
+          url: 'stock/updateGoodsStocks',
+          data: JSON.stringify(batch),
+          headers: {
+            'Content-Type': 'application/json;charset=UTF-8'
+          }
+        });
+      }
+
+      function updateStockById() {
+        var params = new URLSearchParams();
+        params.append("id", _this.form.id);
+        params.append("register", _this.checker);
+        params.append("registerTime", new Date());
+        params.append("registerStats", '2');
+        return _this.$axios.post("stock/updateStockById", params);
+      }
+
+      queryWarehouse().then(function (result) {
+        if (!result.data) {
+          _this.$message({
+            showClose: true,
+            message: '仓库存储空间不足',
+            type: 'error'
+          });
+          return;
+        }
+        var nary = [];
+        result.data.forEach(item => {
+          var count = total + item.currentReserves;
+          var capacity = item.warehouseCapacity;
+          if (count <= capacity) {
+            nary.push(item);
+          }
+        });
+        if (nary.length == 0) {
+          _this.$message({
+            showClose: true,
+            message: '仓库存储空间不足',
+            type: 'error'
+          });
+          return;
+        }
+        var warehouse = nary[0];
+        var batch = [];
+        _this.detailsData.forEach(item => {
+          var json = {};
+          json.goodsId = item.goodsId;
+          json.warehouseId = warehouse.id;
+          json.goodsAmount = item.goodsAmount;
+          batch.push(json);
+        });
+        _this.$axios.all([updateGoodsStocks(batch), updateStockById()]).then(_this.$axios.spread(function (res1, res2) {
+            _this.$message({
+              showClose: true,
+              message: '审核通过',
+              type: 'success'
+            });
+            _this.dialogTableVisible = false;
+            _this.getData();
+        })).catch();
       }).catch();
     },
     fail() {
@@ -291,19 +355,19 @@ export default {
       }
       var _this = this;
 
-      function updatePurchase() {
+      function updateStockById() {
         var params = new URLSearchParams();
         params.append("id", _this.form.id);
-        params.append("checker", _this.checker);
-        params.append("checkTime", new Date());
-        params.append("stats", '2');
-        return _this.$axios.post("purchase/updatePurchase", params);
+        params.append("register", _this.checker);
+        params.append("registerTime", new Date());
+        params.append("registerStats", '3');
+        return _this.$axios.post("stock/updateStockById", params);
       }
 
       function saveLog(value) {
         var params = new URLSearchParams();
         params.append("parentID", _this.form.id);
-        params.append("logtype", '采购单审核不通过');
+        params.append("logtype", '入库单审核不通过');
         params.append("logdetail", value);
         return _this.$axios.post("purchase/saveLog", params);
       }
@@ -316,7 +380,7 @@ export default {
         inputType: 'textarea',
         center: 'true'
       }).then(({value}) => {
-        this.$axios.all([updatePurchase(), saveLog(value)]).then(this.$axios.spread(function (res1, res2) {
+        this.$axios.all([updateStockById(), saveLog(value)]).then(this.$axios.spread(function (res1, res2) {
           _this.$message({
             showClose: true,
             message: '审核不通过',
@@ -334,9 +398,20 @@ export default {
   },
   created() {
     this.getData();
-    this.selectBuyer();
   },
-  filters: {}
+  filters: {
+    filter(val) {
+      if (val == '0') {
+        return '录入成功'
+      } else if (val == '1') {
+        return '提交成功'
+      } else if (val == '2') {
+        return '审核通过'
+      } else {
+        return '审核不通过'
+      }
+    }
+  }
 }
 </script>
 

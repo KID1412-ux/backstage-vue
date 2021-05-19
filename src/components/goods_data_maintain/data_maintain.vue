@@ -491,7 +491,7 @@ export default {
           if (!this.addForm.fileObj) {
             this.$message({
               showClose: true,
-              message: '请选择商品图片 ',
+              message: '请选择商品图片',
               type: 'warning'
             });
             return false;
@@ -499,7 +499,7 @@ export default {
           if (this.addVal.length == 0) {
             this.$message({
               showClose: true,
-              message: '请选择商品分类 ',
+              message: '请选择商品分类',
               type: 'warning'
             });
             return false;
@@ -549,7 +549,7 @@ export default {
           if (this.updateVal.length == 0) {
             this.$message({
               showClose: true,
-              message: '请选择商品分类 ',
+              message: '请选择商品分类',
               type: 'warning'
             });
             return false;
