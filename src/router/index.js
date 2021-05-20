@@ -24,6 +24,7 @@ import WarehousingAudit from "../components/goods_storage/warehousing_audit";
 import HistoryRecord from "../components/goods_storage/history_record";
 import Useruphold from "../components/useruphold";
 import Warehouse from "../components/Warehouse";
+import MyChart_goodsSales from "../components/MyChart_goodsSales";
 
 Vue.use(Router)
 
@@ -101,6 +102,10 @@ export default new Router({
           path: "/Delivery",
           name: "Delivery",
           component: Delivery
+        }, {
+          path: "/MyChart_goodsSales",
+          name: "MyChart_goodsSales",
+          component: MyChart_goodsSales
         },
           {
             path: "/Warehouse",

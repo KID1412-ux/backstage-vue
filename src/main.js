@@ -8,6 +8,9 @@ import router from './router'
 import Axios from "axios";
 
 Vue.config.productionTip = false
+import * as echarts from 'echarts'
+//然后将echart添加到vue的原型上，这样就可以全局使用了
+Vue.prototype.$echarts = echarts;
 
 Vue.use(ElementUI)
 
