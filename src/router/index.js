@@ -23,6 +23,7 @@ import Delivery from "../components/Delivery";
 import WarehousingAudit from "../components/goods_storage/warehousing_audit";
 import HistoryRecord from "../components/goods_storage/history_record";
 import Useruphold from "../components/useruphold";
+import Warehouse from "../components/Warehouse";
 
 Vue.use(Router)
 
@@ -100,7 +101,13 @@ export default new Router({
           path: "/Delivery",
           name: "Delivery",
           component: Delivery
-        }, {
+        },
+          {
+            path: "/Warehouse",
+            name: "Warehouse",
+            component: Warehouse
+          },
+          {
           path: "/WarehousingAudit",
           name: "WarehousingAudit",
           component: WarehousingAudit

@@ -3,17 +3,15 @@
     <el-row :gutter="10">
       <el-col :span="4">
         <el-input
-          placeholder="请输入司机姓名"
-          v-model="ename"
+          placeholder="请输入仓库名称"
+          v-model="wname"
           clearable>
         </el-input>
       </el-col>
       <el-col :span="3" >
-        <el-input
-          placeholder="车辆名称"
-          v-model="cname"
-          clearable>
-        </el-input>
+        <el-select v-model="wtype" clearable>
+          <el-option v-for="Wtype in typeData" :key="Wtype.id" :value="Wtype.id" :label="Wtype.goodsTypeName"></el-option>
+        </el-select>
       </el-col>
       <el-col :span="1">
         <el-button icon="el-icon-search" circle @click="searchDelivery"></el-button>
@@ -28,33 +26,33 @@
       height="350"
       border>
       <el-table-column
-        prop="id"
-        label="配送编号"
+        prop="warehouseNo"
+        label="仓库编号"
         width="90">
       </el-table-column>
       <el-table-column
-        prop="carName"
-        label="车辆名称"
+        prop="warehouseName"
+        label="仓库名称"
         width="180">
       </el-table-column>
       <el-table-column
-        prop="employeeName"
-        label="司机姓名"
+        prop="phone"
+        label="仓库电话"
         width="120">
       </el-table-column>
       <el-table-column
-        prop="beginTime"
-        label="开始时间"
+        prop="warehouseCapacity"
+        label="当前储量"
         width="180">
       </el-table-column>
       <el-table-column
-        prop="amount"
-        label="货物总数(kg)"
+        prop="goodsType"
+        label="可存储类型"
         width="180">
       </el-table-column>
       <el-table-column
-        prop="deliveryStats"
-        label="配送状态"
+        prop="warehouseEmployeeId"
+        label="仓库负责人"
         width="165">
       </el-table-column>
 
@@ -64,7 +62,7 @@
         <template slot-scope="scope">
           <el-button type="success" icon="el-icon-more" circle @click="openeDetail(scope.row.id)"></el-button>
           <el-button type="primary" icon="el-icon-edit" circle @click="openeditwin(scope.row.id)"></el-button>
-          <el-button v-if="scope.row.deliveryStats != '配送中'" type="danger" icon="el-icon-delete" circle @click="opendeletewin(scope.row.id)"></el-button>
+          <el-button type="danger" icon="el-icon-delete" circle @click="opendeletewin(scope.row.id)"></el-button>
 
         </template>
       </el-table-column>
@@ -80,34 +78,15 @@
       :total="total">
     </el-pagination>
 
-    <el-dialog width="70%" title="配送详情" :visible.sync="Detailshow">
-      <el-table  :data="DetailData">
-        <el-table-column label="商户订单号" width="150">
-          <template slot-scope="scope">
-            <el-popover
-              placement="right"
-              width="770"
-              trigger="click">
-              <el-table :data="merchantData">
-                <el-table-column width="170" property="goodsName" label="商品名称"></el-table-column>
-                <el-table-column width="100" label="商品图片">
-                  <template slot-scope="scope">
-                    <img style="width: 80px;height: 60px" :src="scope.row.imageUrl">
-                  </template>
-                </el-table-column>
-                <el-table-column width="300" property="goodsDescribe" label="商品详情"></el-table-column>
-                <el-table-column width="100" property="goodsPrice" label="商品价格"></el-table-column>
-                <el-table-column width="100" property="goodsAmount" label="商品数量"></el-table-column>
-              </el-table>
-            <el-link type="primary" @click="openMerchant(scope.row.id)" slot="reference" :underline="false">{{scope.row.orderNumber}}</el-link>
-            </el-popover>
-          </template>
+    <el-dialog width="70%" title="仓库详情" :visible.sync="Detailshow">
+      <el-table
+        height="350"
+        :data="DetailData">
+        <el-table-column property="id" label="仓库编号" width="150">
         </el-table-column>
-        <el-table-column property="userNickname" label="收货人" width="200"></el-table-column>
-        <el-table-column property="deliveryAddress" label="收货地址"></el-table-column>
-        <el-table-column property="amount" label="货物总数"></el-table-column>
-        <el-table-column property="stats" label="配送状态"></el-table-column>
-        <el-table-column property="createTime" label="下单时间" width="200"></el-table-column>
+        <el-table-column property="goodsName" label="商品名称" width="200"></el-table-column>
+        <el-table-column property="warehouseName" label="仓库名称"></el-table-column>
+        <el-table-column property="goodsAmount" label="库存数量"></el-table-column>
       </el-table>
     </el-dialog>
 
@@ -116,38 +95,39 @@
       :visible.sync="addwinshow">
 
       <el-form :model="addform" label-width="100px">
-        <el-form-item label="请选择车辆">
+        <el-form-item label="仓库名称">
           <el-col :span="17">
-          <el-select v-model="addform.carId" clearable>
-            <el-option v-for="Car in CarData" :key="Car.id" :value="Car.id" :label="Car.carName"></el-option>
-          </el-select>
+             <el-input v-model="addform.warehouseName" ></el-input>
           </el-col>
         </el-form-item>
 
-        <el-form-item label="请选择司机">
+        <el-form-item label="仓库电话">
           <el-col :span="17">
-          <el-select v-model="addform.driverId" clearable>
-            <el-option v-for="Driver in DriverData" :key="Driver.id" :value="Driver.id" :label="Driver.name"></el-option>
-          </el-select>
+            <el-input v-model="addform.phone" ></el-input>
           </el-col>
         </el-form-item>
 
-        <el-divider content-position="left">请选择订单</el-divider>
-              <el-table
-                height="350"
-                ref="multipleTable"
-                :data="WDetailData"
-                @selection-change="handleSelectionChange">
-                <el-table-column
-                  type="selection"
-                  width="55">
-                </el-table-column>
-                <el-table-column property="userNickname" label="收货人" width="100"></el-table-column>
-                <el-table-column property="deliveryAddress" label="收货地址"></el-table-column>
-                <el-table-column property="amount" label="货物总数"></el-table-column>
-                <el-table-column property="stats" label="配送状态"></el-table-column>
-                <el-table-column property="createTime" label="下单时间" width="200"></el-table-column>
-              </el-table>
+        <el-form-item label="仓库储量">
+          <el-col :span="17">
+            <el-input v-model="addform.warehouseCapacity" ></el-input>
+          </el-col>
+        </el-form-item>
+
+        <el-form-item label="仓库存储类型">
+          <el-col :span="17">
+            <el-select v-model="addform.goodsType" clearable>
+              <el-option v-for="Wtype in typeData" :key="Wtype.id" :value="Wtype.id" :label="Wtype.goodsTypeName"></el-option>
+            </el-select>
+          </el-col>
+        </el-form-item>
+
+        <el-form-item label="仓库管理员">
+          <el-col :span="17">
+            <el-select v-model="addform.warehouseEmployeeId" clearable>
+              <el-option v-for="Wtype in DriverData" :key="Wtype.id" :value="Wtype.id" :label="Wtype.employeeName"></el-option>
+            </el-select>
+          </el-col>
+        </el-form-item>
 
 
         <el-button type="info" @click="addDelivery">新增</el-button>
@@ -163,27 +143,38 @@
 
       <el-form :model="editform">
 
-        <el-form-item label="配送编号">
-          <el-input v-model="editform.id" disabled></el-input>
-        </el-form-item>
-        <el-form-item label="车辆名称">
-          <el-input v-model="editform.carName" disabled></el-input>
-        </el-form-item>
-        <el-form-item label="司机姓名">
-          <el-input v-model="editform.employeeName" disabled></el-input>
-        </el-form-item>
-        <el-form-item label="开始时间">
-          <el-input v-model="editform.beginTime" disabled></el-input>
+        <<el-form-item label="仓库名称">
+        <el-col :span="17">
+          <el-input v-model="editform.warehouseName" ></el-input>
+        </el-col>
+      </el-form-item>
+
+        <el-form-item label="仓库电话">
+          <el-col :span="17">
+            <el-input v-model="editform.phone" ></el-input>
+          </el-col>
         </el-form-item>
 
-        <el-form-item label="货物总数">
-          <el-input v-model="editform.amount" disabled></el-input>
+        <el-form-item label="仓库储量">
+          <el-col :span="17">
+            <el-input v-model="editform.warehouseCapacity" ></el-input>
+          </el-col>
         </el-form-item>
-        <el-form-item label="配送状态">
-          <el-select v-model="editform.deliveryStats" placeholder="车辆状态" clearable>
-            <el-option key="已配送" :value="1" label="已配送"></el-option>
-            <el-option key="配送中" :value="0" label="配送中"></el-option>
-          </el-select>
+
+        <el-form-item label="仓库存储类型">
+          <el-col :span="17">
+            <el-select v-model="editform.goodsType" disabled clearable>
+              <el-option v-for="Wtype in typeData" :key="Wtype.id" :value="Wtype.id" :label="Wtype.goodsTypeName"></el-option>
+            </el-select>
+          </el-col>
+        </el-form-item>
+
+        <el-form-item label="仓库管理员">
+          <el-col :span="17">
+            <el-select v-model="editform.warehouseEmployeeId" clearable>
+              <el-option v-for="Wtype in DriverData" :key="Wtype.id" :value="Wtype.id" :label="Wtype.employeeName"></el-option>
+            </el-select>
+          </el-col>
         </el-form-item>
       </el-form>
 
@@ -195,7 +186,7 @@
       title="提示"
       width="30%"
       :visible.sync="scisshow">
-      <span>是否删除该配送单</span>
+      <span>是否删除该仓库</span>
       <span slot="footer" class="dialog-footer">
         <el-button type="info" @click="deleteDelivery">确 定</el-button>
        <el-button type="warming" @click="scisshow = false">取 消</el-button>
@@ -208,14 +199,14 @@
   export default {
     data() {
       return {
-        ename:"",
-        cname:"",
+        wname:"",
+        wtype:"",
         tableData: [],
         DetailData:[],
         WDetailData:[],
         merchantData:[],
         DriverData:[],
-        CarData:[],
+        typeData:[],
         multipleSelection:[],
         total:0,
         pageno:1,
@@ -226,8 +217,12 @@
         Detailshow:false,
         editform:{},
         addform:{
-          carId:"",
-          driverId:""
+          warehouseName:"",
+          phone:"",
+          warehouseCapacity:"",
+          currentReserves:"",
+          goodsType:"",
+          warehouseEmployeeId:""
         },
         scid:""
       }
@@ -262,16 +257,16 @@
           })
         });
       },
-      getCar(){
+      getWtype(){
         var _this =this;
-        this.$axios.post("car/queryCar.action").then(function (response) {
-          _this.CarData = response.data;
+        this.$axios.post("Warehouse/queryWtype.action").then(function (response) {
+          _this.typeData = response.data;
         });
       },
       getDriver(){
         var _this =this;
-        this.$axios.post("Delivery/queryDriver.action").then(function (response) {
-            _this.DriverData = response.data;
+        this.$axios.post("Warehouse/querywarehouseEmployee.action").then(function (response) {
+          _this.DriverData = response.data;
         });
       },
       getdata(){
@@ -282,21 +277,25 @@
         params.append("pageNo",this.pageno); //分页
         params.append("pageSize",this.pagsize);
 
-        params.append("employeeName",this.ename);
-        params.append("carName",this.cname);
+        params.append("warehouseName",this.wname);
+        params.append("goodsType",this.wtype);
 
-        this.$axios.post("Delivery/queryAllDelivery.action",params).then(function (response) {
+        this.$axios.post("Warehouse/queryAllWarehouse.action",params).then(function (response) {
           _this.total = response.data.total;
-          _this.tableData=response.data.list.map(function (item) {
-            if(item.deliveryStats==0){
-              item.deliveryStats="配送中"
-            }
-            else{
-              item.deliveryStats="已配送"
-            }
+          _this.tableData=response.data.records.map(function (item) {
+            _this.typeData.forEach(function (z) {
+                  if(z.id==item.goodsType){
+                    item.goodsType=z.goodsTypeName;
+                  }
+            })
+            _this.DriverData.forEach(function (y) {
+              if(y.id==item.warehouseEmployeeId){
+                item.warehouseEmployeeId=y.employeeName;
+              }
+            })
             return item;
           });
-          }).catch();
+        }).catch();
       },
       openeditwin(id){
 
@@ -305,7 +304,7 @@
         var params = new URLSearchParams();
         params.append("id",id);
 
-        this.$axios.post("Delivery/queryDeliveryById.action",params).then(function (response) {
+        this.$axios.post("Warehouse/queryWarehouseById.action",params).then(function (response) {
           _this.editform = response.data;
           _this.isshow=true;
         }).catch( function (error) {
@@ -321,22 +320,8 @@
         var params = new URLSearchParams();
         params.append("id",id);
 
-        this.$axios.post("DeliveryDetail/queryDeliveryDetail.action",params).then(function (response) {
-          _this.DetailData = response.data.map(function (item) {
-            if(item.stats==0){
-              item.stats="已下单"
-            }
-            else if(item.stats==1){
-              item.stats="已发货"
-            }
-            else if(item.stats==1){
-              item.stats="待提货"
-            }
-            else{
-              item.stats="已提货"
-            }
-            return item;
-          })
+        this.$axios.post("Warehouse/queryGoodsWarehouseById.action",params).then(function (response) {
+          _this.DetailData = response.data
           _this.Detailshow=true;
         }).catch( function (error) {
           _this.$message({
@@ -355,10 +340,10 @@
         params.append("id",id);
 
         this.$axios.post("DeliveryDetail/queryMerchantDetail.action",params).then(function (response) {
-            _this.merchantData = response.data.map(function(item){
-              item.imageUrl = "http://localhost:8090/code/"+item.imageUrl;
-              return item;
-            })
+          _this.merchantData = response.data.map(function(item){
+            item.imageUrl = "http://localhost:8090/code/"+item.imageUrl;
+            return item;
+          })
         }).catch( function (error) {
           _this.$message({
             message: '服务端异常',
@@ -377,7 +362,7 @@
         var params = new URLSearchParams();
         params.append("id",this.scid);
         this.scid="";
-        this.$axios.post("Delivery/deleteDelivery.action",params).then(function (response) {
+        this.$axios.post("Warehouse/deleteWarehouseById.action",params).then(function (response) {
           if(response.data){
             _this.getdata();
             _this.$message({
@@ -419,38 +404,24 @@
         Object.keys(this.addform).forEach( (key) =>{
           formData.append(key,_this.addform[key]);
         })
-        var sum=0;
-        this.multipleSelection=this.multipleSelection.map(function (item) {
-              sum+=item.amount;
-              item=item.id;
-              return item;
-        })
-        formData.append("amount",sum);
-        formData.append("ids",this.multipleSelection);
+
         this.$axios({
           method: 'post',
-          url: 'Delivery/addDelivery.action',
+          url: 'Warehouse/addWarehouse.action',
           data:formData,
           headers: {
             'Content-Type':'multipart/form-data'
           }
         }).then(function (response) {
+          if(response.data){
             _this.getdata();
             _this.addwinshow=false;
-            if(response.data.length>5){
-              _this.$message({
-                message: response.data,
-                type: 'error'
-              });
-            }
-            else {
-              _this.$message({
-                message: response.data,
-                type: 'success'
-              });
-            }
-
-
+            _this.addform=[];
+            _this.$message({
+              message: '新增成功！',
+              type: 'success'
+            });
+          }
 
         }).catch();
       },
@@ -465,7 +436,7 @@
         })
         this.$axios({
           method: 'post',
-          url: 'Delivery/updateDelivery.action',
+          url: 'Warehouse/updateWarehouseById.action',
           data:formData,
           headers: {
             'Content-Type':'multipart/form-data'
@@ -486,6 +457,8 @@
       }
     },
     created() {
+      this.getWtype();
+      this.getDriver();
       this.getdata();
     }
   }
@@ -499,4 +472,5 @@
     text-align: center;
   }
 </style>
+
 

@@ -315,7 +315,7 @@ export default {
       bool: true,
       addForm: {
         goodsName: '', goodsDescribe: '', fileObj: '',
-        goodsPrice: '', goodsUnit: '',
+        goodsPrice: '', goodsUnit: '', goodsSales: 0,
         goodsState: 0, firstKindId: '', secondKindId: '', thirdKindId: '',
         firstKindName: '', secondKindName: '', thirdKindName: '', supplierId: 0
       },
@@ -481,6 +481,7 @@ export default {
       this.updateForm.fileObj = file.raw;
     },
     updateImgRemove() {
+      this.updateForm.fileObj = '';
       setTimeout(() => {
         this.bool = true;
       }, 1000);
@@ -535,6 +536,7 @@ export default {
       this.$refs[formName].resetFields();
       this.imageList = [];
       this.addVal = [];
+      this.addForm.fileObj = '';
     },
     imageExceed(file, fileList) {
       this.$message({
